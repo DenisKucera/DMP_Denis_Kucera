@@ -1,0 +1,96 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[hidelinks]{hyperref}
+\usepackage[czech]{babel}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\def\fonte{1} %1=times else=arial(helvet)
+\input{packages.tex}
+\graphicspath{ {./img/} }
+\def\grafika{1} %1
+\sisetup{
+	round-mode = places,
+	round-precision = 6,
+	round-pad = false
+}
+
+\usepackage[
+backend=bibtex,  %if we want unicode and many other features (biber is already by default)
+style=iso-numeric, % or another iso-<style>
+sorting=nty
+]{biblatex}
+\addbibresource{literatura.bib}
+\usepackage{indentfirst}
+
+%\newcommand{\e}{$e^-$}
+%\def\uran #1 {$\ce{ ^{#1}_{92}U }$}
+\newcommand{\nazevprace}{Robotická ruka}
+\newcommand{\obor}{Technické lyceum 78-42-M/01}
+\newcommand{\rok}{2022/2023}
+\newcommand{\trida}{L4A}
+\newcommand{\jmeno}{Denis}
+\newcommand{\prijmeni}{Kučera}
+
+\begin{document}
+	\input{title.tex}
+\pagestyle{plain}
+\setcounter{page}{3}
+\tableofcontents
+
+ \setstretch{1.5}
+
+%\thispagestyle{empty}
+\setstretch{1.5}
+
+ %\addcontentsline{toc}{section}{Úvod}
+\input{text-00-Zadani}
+\input{text-01-uvod}
+\input{text-02-Oscar95}	
+\input{text-03-Hardwarove-upravy}
+\input{text-04-Ovladani-pomoci-aplikace}
+\input{text-05-Kolaborativni-robot}
+\input{text-06-Implementace-G-codu}
+\input{text-07-Laboratorni-prace-z-robotiky}
+\input{text-08-zaver}
+
+\newpage
+	\printbibliography[title={Seznam literatury, pramenů a internetových zdrojů}]
+	
+	\newpage % někdy je potřeba, aby správně vyšlo číslování stránky se seznamem obrázků v obsahu 
+	
+	\addcontentsline{toc}{section}{Seznam obrázků} % přidá seznam obrázků do obsahu 
+	
+	\listoffigures   % seznam obrázků  
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \pagestyle{empty}
+	\newpage
+ 
+   \includepdf[pagecommand=\thispagestyle{empty} \addcontentsline{toc}{section}{Laboratorní práce}, pages=1]{1 strana.pdf}
+   \includepdf[pagecommand=\thispagestyle{empty},pages=1-4]{4 strany.pdf}
+ 
+	
+\section*{Další přílohy}
+\enlargethispage{20mm}
+    %\vspace{-50mm}
+        \begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.8]{img/oscar_old.jpg}
+			\caption{Poslední laboratorní práce s Oscarem95 \cite{Laborka-2009}}
+			\label{fig:oscar_old}
+		\end{center}
+		\vspace{-2mm}
+	\end{figure}
+\newpage
+ \begin{wrapfigure}{c}{\textwidth}
+		\begin{center}
+			\includegraphics[scale=1]{img/rbgridui.jpg}
+			\caption{Vzhled vytvořeného prostředí aplikace (vlastní fotografie)}
+			\label{fig:rbgridui}
+		\end{center}
+		\vspace{0mm}
+
+\end{wrapfigure}
+	
+	\addcontentsline{toc}{section}{Další přílohy}
+%\end{spacing}
+\end{document}

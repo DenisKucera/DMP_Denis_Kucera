@@ -1,0 +1,105 @@
+\section{Hardwarové úpravy}
+
+\subsection{Mikrokontrolér}Jako mikrokontrolér, který bude následně řídit celé robotické rameno jsem zvolil vývojovou desku ESP32. Je to univerzální deska osazená modulem ESP32-WROOM32 a periferiemi. Samotný ESP32 
+se prodává v různých variantách. Různé varianty se liší použitou podpůrnou deskou nebo verzí 
+mikrokontroleru. Desky se můžou navzájem v mnoha aspektech odlišovat. Označujeme je 
+hromadně jako devkity, z anglického development kit. Každý devkit může mít jiný počet pinů,
+vzhled a součástky použité na desce. Jako pin označujeme vývod nebo připojení desky. 
+Název pochází z anglického pinhead, kde se tímto názvem označují konektory. Důležitá je i 
+použitá anténa pro přenos wifi a bluetooth. Ta může být v mnoha případech také různá. Já na 
+svém projektu budu používat ESP32 devkit C s 38 piny. Tato deska má celkem 34 GPIO´s 
+(nastavitelných vstupně-výstupních pinů). Některé mají i více funkcí naráz. Jedná se například 
+o kapacitní senzory, DAC a ADC převodníky. Zbytek pinů slouží pro připojení napájení, 
+externího krystalu, nebo zapínání celého obvodu. Zvláštními GPIO´s jsou piny 34, 35, 36 a 39. 
+Ty slouží pouze jako vstupní. Budeme se jimi blíže zabývat v kapitole věnované koncovým
+dojezdům. Samotná deska s procesorem ESP32-WROOM32 je vyvinuta společností Espressif. Jedná 
+se o konkrétní variantu ze série ESP32 všechny tyto varianty využívají výkonný čip Tensilica 
+Xtensa LX6. Tento procesor má standardně dvě jádra a frekvenci v rozmezí 40-240MHz. 
+ESP32-WROOM32 dále má integrovanou wifi a bluetooth komunikaci. Maximální napájecí 
+napětí procesoru je 3,3\,V. Externí stabilizátor na desce zvládne zpracovat i vyšší napětí. Deska 
+má standardně osazený USB micro B konektor, přes který se nahrává kód do desky. Dále se na desce nachází indikační LED a dvě tlačítka. Jedno tlačítko slouží jako hard reset, pomocí 
+druhého se spouští nahrávání kódu do paměti, v případě že se nespustilo automaticky. Speciální 
+prostředí, ve kterém se tyto desky programují, se jmenuje ESP-IDF (IoT Development 
+Framework), vyvinuté také firmou Espressif. V dnešní době se tyto desky těší velké oblibě 
+zejména v IoT aplikacích. \cite{ESP32}
+
+\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.75]{img/ESP32.jpg}
+			\caption{Desky ESP32 (Vlastní obrázek)}
+			\label{fig:ESP32}
+		\end{center}
+		\vspace{0mm}
+\end{figure}
+
+\subsection{Universal stepper board}
+Už od začátku práce na projektu Oscar95 bylo jasné, že původní desku plošného spoje z roku 1995 bude nutné nahradit. O to se postaral můj před\-chůd\-ce Ondřej Kratochvíl ve své maturitní práci. Nyní je k dispozici univerzální deska, se kterou můžu pracovat, popřípadě ji dále vyvíjet. 
+V následující kapitole se budu věnovat rozboru desky, jednotlivým funkcím a v navazující kapitole přidám i své poznatky o tom, co bych do budoucna zlepšil. Universal stepper board je oboustranná 
+obdélníková DPS s rozměry 86\,mm na 74\,mm. Tyto rozměry byly zvoleny tak, aby deska 
+přesně seděla mezi distanční sloupky v základně robotického ramene. V rozích jsou malé 
+otvory pro uchycení desky pomocí šroubů. Deska obsahuje pozici pro ESP32 Devkit C(38pin) 
+a čtyři pozice pro drivery TMC22XX série i s vývody pro připojení motorů. Adresování driverů 
+probíhá pomocí čtyř osazených rezistorů. Rezistory jsou připojeny na piny MS1 a MS2 driveru. 
+Jsou nakonfigurované tak, aby vytvořili čtyři různé kombinace pro adresování UART 
+komunikace s drivery. Dále se na desce nachází ochrana proti přepólování a přepětí. Zároveň 
+tento obvod umožňuje spínat silové napájení driverů pomocí ESP32. Na levé straně desky je 
+vyvedeno napájení 3.3\,V a čtyři vstupní piny z mikrokontroleru ESP32 určené pro koncové 
+dojezdy motorů. Poslední funkcí desky je možnost fyzicky na desce odpojit jednotlivé drivery 
+přes komunikaci UART. Při práci na projektu se deska osvědčila. Pár nedokonalostí se však 
+přece jenom našlo. \cite{Universalstepperboard}
+\subsection{Úpravy desky}
+V následující kapitole se budu věnovat svým úpravám desky, které bylo nutné dodělat. Jednou z nejdůležitějších elektrotechnických úprav je bezpochyby nové napájení desky. Původně musela být nová deska napájena 12\,V zdrojem a zároveň USB kabelem 5\,V z počítače. 12\,V bylo hlavní silové napájení pro drivery krokových motorů a 5\,V pro mikrokontrolér. Přidal jsem proto stabilizátor napětí, který snižuje napětí z 12\,V na 5\,V. Připojil jsem mezi stabilizátor a hlavní napájení ze zdroje diodu. Dioda je tam proto, aby v režimu napájení z USB nedocházelo únikům do desky. Teď může deska fungovat i bez připojeného USB kabelu. Důležitou maličkostí se stalo přidání kondenzátoru k bootovacímu vývodu mikrokontroléru. Nebylo už nadále zapotřebí mačkat při každém nahrávání nového kódu mačkat bootovací tlačítko. Dalším důležitým prvkem byla detekce připojení hlavního napájení 12\,V. To jsem realizoval pomocí optočlenu při\-po\-je\-ném na řídící vývod mikrokontroléru. Mikrokontrolér tak dostavá informaci pokaždé když dojde k připojení, nebo odpojení hlavního napájení. Poslední úpravy proběhly v rámci přidávaní nových signalizačních prvků. Například připojení piezo měniče, LED diod a  vypínacího/zapínacího tlačítka.
+
+\subsection{Zprovoznění koncových dojezdů}
+Důležitou součástí každého správného robotického ramene by měly být i koncové 
+dojezdy motorů. Pomocí nich se dá přesně zjistit natočení motoru a zároveň mohou fungovat 
+jako pevné dorazy, kde motor zastaví. Jak již bylo dříve zmíněné, moje robotické rameno má 
+čtyři optické závory. Při testování původní desky žádná z nich nefungovala. Mým úkolem tedy 
+bylo zjistit, jestli jsou optické závory funkční, jak byly původně zapojeny a najít způsob, jak je
+bude možné připojit k nové desce. Po otevření plastového obalu závory jsem uvnitř našel dvě 
+součástky. Jedna z nich byla infračervená LED dioda a druhá fototranzistor. Udělal jsem si 
+schéma vnitřního zapojení a ověřil funkčnost součástek. Následně jsem celou optickou závoru 
+zapojil do zkušební desky bread board. Vypočítal jsem, že pro správnou funkci infračervené 
+LED, při použitém napětí 3,3\,V, je zapotřebí použít 68 ohmový rezistor v sérii s LED. Poté jsem 
+se mohl přesunout na testování fototranzistoru. Při zapnuté LED je otevřený i fototranzistor. 
+Naměřil jsem, že v otevřeném stavu je jeho odpor přibližně 10 kiloohmů. Pokud na něj nesvítí 
+světlo z LED a je zavřený, je jeho odpor téměř nekonečný. Fototranzistor jsem měl v plánu 
+použít jako spínací prvek, který bude přepínat mezi logickými stavy na vstupu ESP32. Nejprve 
+ale bylo třeba vstupním pinům na desce přiřadit logický stav. Vzhledem k tomu, že se daným 
+pinům nedá přiřazovat logická hodnota programem, příkazy pull up a pull down, musel jsem to 
+vyřešit hardwarově. Toho jsem docílil tak, že jsem připájel 100 kiloohmové pull up rezistory 
+na Universal stepper board. Tím jsem nastavil na všech čtyřech vstupních pinech napětí 3,3V. 
+Následně by tedy fototranzistor v sepnutém stavu tuto hodnotu změnil na logickou 0, protože 
+by byl připojen na záporný pól. To znamená, že při běžném stavu je závora nepřerušena, a tím 
+pádem je na vstupním pinu ESP32 logická hodnota 1. Jakmile rameno dojede na svůj konec 
+rozsahu, optická závora se přeruší a logická hodnota se změní na 0. Mechanický doraz je 
+zajištěný kovovými plíšky připevněnými na místech maximálního rozsahu. V některých 
+místech dorazy chyběly. Musel jsem je proto doplnit. V jednom případě jsem jako dojezd použil 
+spínač. \cite{bibtex:Kratochvíl}
+
+\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.75]{img/opto.jpg}
+			\caption{Testování optické závory (Vlastní obrázek)}
+			\label{fig:opto}
+		\end{center}
+		\vspace{0mm}
+\end{figure}
+
+\subsection{Konstrukční úpravy}
+Bylo potřeba dát robota do pořádku i po stránce hardwarové. Seřídit celé rameno, zkontrolovat všechny mechanické prvky, popřípadě opravit menší nedostatky z výroby. Důležitým úkolem bylo vymyslet upevnění řídící desky do základny ramene. Padlo několik návrhů, jak desku umístit. Nakonec jsme zvolili umístění mezi sloupky podstavy. Návrhů samotného řešení jsem udělal několik. Mým cílem bylo desku připevnit bez mechanického zásahu do podstavy. Počítal jsem s tím, že do budoucna pro případnou novou desku bude podstava zase jiná. Zvolil jsem proto tvar, který kopíruje vnitřní obvod podstavy. Na tuto plochu jsem potom přidal distanční sloupky pro dostatečné odsazení desky. Výsledná plocha držáku byla veliká. Se spo\-lu\-žá\-kem jsme proto poté ve Sliceru upravili desku tak, aby se na její výrobu spotřebovalo co nejméně materiálu, ale zároveň byla pevná. Výsledek jsem poté upevnil u krajů základny tavnou pistolí. Poslední velmi důležitou úpravou základny Oscara jsem se inspiroval u spolužáka Šimona Skládaného. Vymyslel přední panel pro konektory vyvedené z desky. Pro umístění panelu jsem zvolil díru, která v základně zůstala po demontáži původní desky s paralelním portem. Tato díra má rozměry přibližně 8,3x6,3\,mm, což je pro uchycení dostačující. Toto řešení se mi líbilo, a proto jsem jeho nápad použil a přidal své vlastní úpravy. Panel jsem navrhoval v programu Solidworks, ve kterém se mi pracuje dobře. Vyvést ven jsem chtěl hlavně konektor USB z mikrokontroléru ESP32. Pokaždé, když by bylo potřeba nahrát nový program, muselo by se odšroubovat celé víko základny, a to je velmi nepraktické. Pro svou mechanickou odolnost a velmi dobré rozměry jsem si nakonec vybral konektor USB typ B ve standardní velikosti. Následně jsem vyrobil redukci a vymodeloval pro ni místo na panelu. Dalším důležitým prvkem je vyvedené napájení desky. To jsem vyřešil pomocí přidání napájecího DC power Jack konektoru. Pro jeho upevnění stačilo do panelu udělat díru o správném průměru. Poslední periferie, které jsem chtěl přidat na přední panel, byly signalizační prvky, tlačítko ON/OFF a dvě LED diody.\\ Stejně jako u napájecího konektoru stačilo pouze zhotovit díry se správným průměrem. Celý model panelu jsem nechal vytisknout u kamaráda na 3D tiskárně.
+
+\subsection{Další úpravy robota}
+Na závěr jsem se ještě rozhodl dodělat chybějící podložky, vymodelovat nové nástavce do čelistí a připojit DIAG pin do driveru TMC2209. Komponenty jsem opět modeloval v programu Solidworks. U podložek jsem se snažil, aby byly co nejvíce podobné těm původním. Nejenom z hlediska vzhledu, ale i materiálu. Materiál pro tisk jsem zvolil ABS. Následně jsem nechal díl vytisknout na školní 3D tiskárně. Stejný postup jsem zopakoval i pro nástavce do čelistí. S tím rozdílem že jsem použil jiný materiál. Nástavce jsem nechal vytisknout z pružného flex materiálu, který se následně dokáže tvarem přizpůsobit. To se bude hodit v případě, že předmět nebude mít dokonale hladký povrch. Poslední významnou úpravou bylo připojení DIAG pinu do mikrokontroléru ESP32. Bez něj by totiž nefungovala funkce Stallguard\,\footnote{popsáno v kapitole 5}. Z driveru jsem drátem vyvedl tyto piny a připojil je na GPIO piny 19, 21, 22, 23, mikrokontroléru ESP32. V programu jsem následně piny nastavil a vytvořil pro ně hardwarový interrupt. Tento interrupt čeká na pulzy přicházející z DIAG pinu. \cite{BIGTREETECH-TMC2209}
+
+	\begin{figure}
+		\begin{center}
+			\includegraphics[scale=0.25]{img/nastavec.png}
+			\caption{Vymodelovaný nástavec do čelistí robota (vlastní fotografie)}
+			\label{fig:nastavec}
+		\end{center}
+		\vspace{-7mm}
+	\end{figure}
+
+
+

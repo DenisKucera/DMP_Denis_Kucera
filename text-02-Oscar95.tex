@@ -1,0 +1,64 @@
+\section{Oscar95}
+Oscar95 je školní robotické rameno od firmy Elcom Education řízené čtyřmi krokovými 
+motory. Rameno bylo zkonstruováno v roce 1995. Původně sloužilo jako pomůcka pro 
+výuku automatizace. Dalo se řídit buď ručně pomocí speciálního ovladače s tlačítky a nebo za pomocí programu v počítači. Program v počítači umožňoval studentům si vyzkoušet jednoduché řízení robota pomocí programu. Program mohli studenti psát v jazyce PASCAL, C++, BASIC, nebo také Baltazar. Poslední laboratorní práce s ním byla provedena v roce 2009 -- viz. obrázek \ref{fig:oscar_old}  na straně 
+\pageref{fig:oscar_old}. Od té doby čeká na modernizaci. V některých aspektech je vzhledem ke stáří poměrně neaktuální. 
+Rameno umožňuje pohyb 360° kolem základny, svírání předních čelistí, pohyb vertikálně a 
+horizontálně celou konstrukcí. Rameno je vyrobené převážně z hliníku, až na pár ocelových 
+dílů a mosazné závitové tyče, aby byla celá konstrukce, pokud možno co nejlehčí. Dokáže 
+uzvednout předmět o hmotnosti až 100 g. Dále disponuje i optickými senzory koncových 
+dojezdů, ale o těch více v další podkapitole. Původní deska byla vzhledem ke stáří a 
+nekompatibilitě s dnešní pokročilou technikou nahrazena modernější. \cite{Oscar95} \cite{staveb-robot}
+\subsection{Krokové motory}
+Dalším důležitým dílem je pohon celého ramene. Na Oscarovi jsou osazeny celkem čtyři
+krokové motory. Konkrétně se jedná o typ HY100-1713-020 A4 od firmy MAE. Většina 
+dnešních moderních strojů například 3D tiskárny, CNC frézky, gravírky nebo lasery v yužívají 
+jako pohonnou jednotku právě krokové motory. Největší výhodou a důvodem, proč se používají 
+právě v těchto aplikacích, je jejich vysoká přesnost, odolnost a nízká poruchovost. 
+K mechanickému tření dochází jenom v ložiscích, proto prakticky nedochází k opotřebení 
+motoru. Na rozdíl od běžných motorů se dají ovládat s přesností na jednotlivé stupně jedné 
+otáčky. Nepotřebujeme ani enkodéry pro zjištění polohy natočení motoru. Stačí nám pouze 
+počítat jednotlivé řídící impulzy. Zároveň se dají pevně zastavit v dané poloze a tím držet svou 
+pozici. Pro jejich správné fungování je potřeba použít řídící elektroniku neboli “driver“, který
+řídí pohyb motoru. Princip krokového motoru spočívá v postupném spínání cívek statoru a 
+speciálně magneticky polarizovaném rotoru. Tento speciální rotor má výstupky po svém 
+obvodu. Tyto výstupky mají vždy opačnou polaritu než tělo rotoru. Při sepnutí cívek statoru se 
+rotor pootočí právě o vzdálenost jednoho výstupku a tím udělá jeden krok. Při správném spínání 
+cívek dochází ke spojitému pohybu v krocích. Jedinou nevýhodou tohoto systému je, že může 
+dojít k situaci, kdy se rotor otáčí pomaleji než magnetické pole ve statoru. Tento jev se nazývá 
+ztráta kroku a dochází k němu většinou při přetížení motoru, nebo při velmi rychlému spínání 
+cívek statoru. Dnešní moderní řídící elektroniky si s tímto problémem dokážou poradit pomocí 
+zpětné vazby. \cite{krokove} \cite{bibtex:Kratochvíl}
+\subsection{Optické závory}
+Jak jsem už dříve zmiňoval, rameno je osazeno optickými senzory dojezdu. Celkově jsou 
+použity čtyři. Optické senzory pracují na principu infračervené LED diody a fototranzistoru
+nebo fotodiody. Kombinací těchto prvků vznikne součástka zvaná optická závora. Tato 
+součástka pracuje na principu infračerveného světelného toku mezi vysílačem (LED diodou) a 
+přijímačem (fototranzistorem nebo fotodiodou). Jako zdroj světla je nejčastěji použita
+infračervená LED dioda s vlnovou délkou v rozmezí 760 - 940\,nm. Napájecí napětí této 
+diody se pohybuje většinou kolem 1,2\,V. Jako přijímač se používá buď fotodioda, nebo častěji 
+fototranzistor. Fotodioda se standardně chová jako běžná dioda, pokud ale její přechod 
+osvítíme, dojde k nárůstu proudu v závěrném směru. Používanější fototranzistor se naopak 
+chová jako běžný bipolární tranzistor jenom s tím rozdílem, že místo báze reguluje proud 
+dopadající světlo. Námi nejvíce známé použití optických závor je u pokladen v supermarketech. 
+Pokaždé, když se přeruší světelný tok z fotodiody do fototranzistoru motory pohánějící pás se 
+zastaví. Dochází tak k pozvolnému posouvání zboží. Infračervené světlo je pro naše oko 
+neviditelné, proto není možné tyto děje běžně pozorovat. \cite{bibtex:Kratochvíl}
+\subsection{Původní deska}
+Oscar95 byl od výroby osazen speciální deskou dělanou na míru pro účely 
+automatizovaného ovládání krokových motorů. Deska má tvar pravidelného šestiúhelníku 
+s vyříznutou obdélníkovou dírou. Je to oboustranná DPS, ale má osazené pouze vývodové THT 
+součástky z jedné strany. Geometrie jednotlivých měděných cest je už také značně zastaralá. 
+V dnešní době se už jen málokdy vidí deska s obdélníkovými hranami u měděných cest. Ve své 
+době tato deska umožňovala zajímavé funkce. Jednou z nich byla například možnost 
+komunikace s počítačem. Ta byla zprostředkována paralelním portem Canon 25. Tento 
+konektor zároveň sloužil i pro připojení externího ovladače. Rameno šlo tedy ovládat i ručně. 
+Díky dochované dokumentaci k Oscarovi jsem se dozvěděl, že deska byla původně určena pro 
+napájení 12\,V. Dále se napájecí napětí stabilizovalo na 5\,V určených pro logiku a optické závory. 
+Při rozboru desky jsem zjistil, že se na desce nachází dva integrované obvody L298N a L297, 
+které se hojně používají i v dnešní době. Driver L298N má v sobě zabudovaný dvojitý H 
+můstek. Obvod L297 zpracovává vstupní signály pro driver L298N. Tyto obvody slouží k řízení 
+krokových motorů pomocí TTL logických signálů. Pracovní takt těchto obvodů se nastavoval 
+buď externě přes PC, nebo přímo na desce pomocí časovače NE555. \cite{Oscar95} \cite{staveb-robot}  
+
+
